@@ -1,6 +1,6 @@
 
 
-import cv2 
+import cv2 ,os
 import pickle,glob
 import matplotlib.pyplot as plt
 
@@ -24,46 +24,46 @@ class ImageFeatureExtractor:
         keypoint,descriptor= ImageFeatureExtractor.detector.detectAndCompute(self.image, None)
         #deserialize Keypoints
         deserializedKeypoints = []
-        filepath = "kp/" + str(self.imgpath.split('/')[-1].split('.')[0]) + ".txt"
+        filepath = "kp/" + str(self.imgpath.split('/')[-1].split('.')[0].strip()) + ".txt"
         for point in keypoint:
             temp = (point.pt, point.size, point.angle, point.response, point.octave, point.class_id)
             deserializedKeypoints.append(temp)
         with open(filepath, 'wb') as fp:
-            pickle.dump(deserializedKeypoints, fp)
+            pickle.dump(deserializedKeypoints, fp)    
+
         #deserialize descriptor
-        filepath = "ds/" + str(self.imageList[i].split('/')[-1].split('.')[0]) + ".txt"
+        filepath = "ds/" + str(self.imgpath.split('/')[-1].split('.')[0].strip()) + ".txt"
         with open(filepath, 'wb') as fp:
             pickle.dump(descriptor, fp)
-        i += 1
         return (keypoint,descriptor)
 
 class ImageComparator:
     bf = cv2.BFMatcher()
-    def __init__(self,sourceimgname:str,allblockimgnamelist:list):
-        self.sourceimgname=sourceimgname
+    def __init__(self,allblockimgnamelist:list):
         self.allblockimgnamelist=allblockimgnamelist
-        self.calculateResultsFor()
     @staticmethod
     def fetchKeypointFromFile(i):
-        filepath = "kp/" + i + ".txt"
+        filepath = "kp/{}.txt".format( i.strip())
+        print(filepath)
+        print("kp file exist=",os.path.exists(filepath))
         keypoint = []
+
         file = open(filepath,'rb')
         deserializedKeypoints = pickle.load(file)
         file.close()
         for point in deserializedKeypoints:
-            temp = cv2.KeyPoint(x=point[0][0],y=point[0][1],_size=point[1], _angle=point[2], _response=point[3], _octave=point[4], _class_id=point[5])
+            temp = cv2.KeyPoint(point[0][0],point[0][1],point[1], point[2], point[3], point[4], point[5])
             keypoint.append(temp)
         return keypoint
 
     @staticmethod
-    def fetchDescriptorFromFile(self,i):
-        filepath = "ds/"+ i + ".txt"
+    def fetchDescriptorFromFile(i):
+        print("----ds:i", i.strip(),".txt")
+        filepath = "ds/{}.txt".format( i.strip())
         file = open(filepath,'rb')
         descriptor = pickle.load(file)
         file.close()
         return descriptor
-
-
 
     @staticmethod
     def calculateScore(matches,keypoint1,keypoint2):
@@ -95,11 +95,12 @@ class ImageComparator:
                     topResults.append(match1)
         return topResults
 
-    
-    def calculateResultsFor(self):
-        keypoint1 = ImageComparator.fetchKeypointFromFile(self.sourceimgname)
-        descriptor1 = ImageComparator.fetchDescriptorFromFile(self.sourceimgname)
-        maxscore=-1
+    def calculateResultsFor(self,newimagename):
+        if len(self.allblockimgnamelist)==0:
+            return 0
+        keypoint1 = ImageComparator.fetchKeypointFromFile(newimagename)
+        descriptor1 = ImageComparator.fetchDescriptorFromFile(newimagename)
+        maxscore=0
         for j in self.allblockimgnamelist:
             keypoint2 = ImageComparator.fetchKeypointFromFile(j)
             descriptor2 =ImageComparator.fetchDescriptorFromFile(j)
