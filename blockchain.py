@@ -11,6 +11,7 @@ class BlockData:
         return block_string
     def isEqual(self,newdata):
         return newdata.imgname==self.imgname
+    
 class BlockChain:
     initialblock=BlockData("bv","acikhack.jpg",[])
     def __init__(self):
