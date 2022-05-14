@@ -6,8 +6,10 @@ import matplotlib.pyplot as plt
 
 class ImageFeatureExtractor:
     detector = cv2.xfeatures2d.SIFT_create()
-    def __init__(self,imgname):
-        pass
+    def __init__(self,imgpath):
+        self.imgpath=imgpath
+        self.image=ImageFeatureExtractor.imageResizeTrain(cv2.imread(self.imgpath,0))
+    @staticmethod
     def imageResizeTrain(image):
         maxD = 1024
         height,width = image.shape
@@ -18,9 +20,23 @@ class ImageFeatureExtractor:
             newSize = (maxD,int(maxD/aspectRatio))
         image = cv2.resize(image,newSize)
         return image
-    def extract():
-        return ImageFeatureExtractor.detector.detectAndCompute(image, None)
-    def createKPfile(self):
+    def extract(self):
+        keypoint,descriptor= ImageFeatureExtractor.detector.detectAndCompute(self.image, None)
+        #deserialize Keypoints
+        deserializedKeypoints = []
+        filepath = "kp/" + str(self.imgpath.split('/')[-1].split('.')[0]) + ".txt"
+        for point in keypoint:
+            temp = (point.pt, point.size, point.angle, point.response, point.octave, point.class_id)
+            deserializedKeypoints.append(temp)
+        with open(filepath, 'wb') as fp:
+            pickle.dump(deserializedKeypoints, fp)
+        #deserialize descriptor
+        filepath = "ds/" + str(self.imageList[i].split('/')[-1].split('.')[0]) + ".txt"
+        with open(filepath, 'wb') as fp:
+            pickle.dump(descriptor, fp)
+        i += 1
+        return (keypoint,descriptor)
+
 class ImageComparator:
     bf = cv2.BFMatcher()
     def __init__(self,sourceimgname:str,allblockimgnamelist:list):

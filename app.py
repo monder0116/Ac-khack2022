@@ -4,6 +4,7 @@
 from flask import Flask, render_template,request,redirect,url_for
 import api,os
 import pandas as pd
+from imagesimilarity import ImageFeatureExtractor,ImageComparator
 DEVELOPMENT_ENV  = True
 
 app = Flask(__name__)
