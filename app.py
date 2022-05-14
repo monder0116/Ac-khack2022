@@ -23,16 +23,13 @@ def index():
 
 @app.route('/checkandsaveimage',methods=["POST"])
 def checkandsaveimage():
-    result=""
+    result=None
     if request.method=="POST":
         image=request.files.get("file")
         path=os.path.join("templates","static","images",image.filename)
         image.save(path)
-        
-        result=api.getimgFeatureVector(path)
+        result=api.append2Chain("mehmet",path)
     return render_template('imgvector.html',imgvec=result,app_data=app_data)
-
-
 
 @app.route('/hakkimizda')
 def hakkimizda():

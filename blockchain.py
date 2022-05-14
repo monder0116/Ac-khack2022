@@ -3,22 +3,32 @@ import hashlib,json
 
 
 class BlockData:
-   def __init__(self,owner,imgname,imgfeaturevector):
-      self.imgfeaturevector,self.imgname,self.owner = imgfeaturevector,imgname,owner
+    def __init__(self,owner,imgname,imgfeaturevector):
+        self.imgfeaturevector,self.imgname,self.owner = imgfeaturevector,imgname,owner
 
-
+    def hash(self):
+        block_string = json.dumps((self.owner,self.imgname,self.imgfeaturevector), sort_keys=True).encode()
+        return block_string
+    def isEqual(self,newdata):
+        return newdata.imgname==self.imgname
 class BlockChain:
-    initialblock=BlockData("bv","acikhack.jpg",[0])
+    initialblock=BlockData("bv","acikhack.jpg",[])
     def __init__(self):
     # Print the linked list
         self.chain=[]
-        self.blockrawdata=[]
         self.newBlock(BlockChain.initialblock,"1")
-    def newBlock(self,blockdata, preheader_hash=None):
+    def newBlock(self,newblockdata, preheader_hash=None):
+        self.checkisdesignvalid(newblockdata)
         prehash=preheader_hash or self.hash(self.chain[-1])
-        newblockheader = {'preheader_hash':prehash,'datahash':self.hash(blockdata)}
+        print("prehash:",prehash)
+        newblockheader = {'preheader_hash':prehash,'blockdata':newblockdata }
         self.chain.append(newblockheader)
-        self.blockrawdata.append(blockdata)
+    def checkisdesignvalid(self,newblockdata):
+        for data in self.chain:
+            blockdata=data['blockdata']
+            if blockdata.isEqual(newblockdata):
+                print("eklenemezzzzzzzz","-",blockdata.imgfeaturevector)
+                break
     @staticmethod
     def hash(block):
         """
@@ -26,10 +36,8 @@ class BlockChain:
         :param block: Block
         """
         # We must make sure that the Dictionary is Ordered, or we'll have inconsistent hashes
-        block_string = json.dumps(block, sort_keys=True).encode()
+        block_string = json.dumps((block['preheader_hash'],block['blockdata'].imgname), sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
     @property
     def last_block(self):
         return self.chain[-1]
-
-

@@ -1,7 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h3>{{imgvec}}</h3>
+<!-- imgvec has-> owner,imgname,imgfeaturevector  -->
+    <h3>{{imgvec.owner}}</h3>
+    <h3>{{imgvec.imgname}}</h3>
+    <h3>{{imgvec.imgfeaturevector[:10]}}</h3>
 
    
 {% endblock %}
