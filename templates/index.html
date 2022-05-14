@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="jumbotron">
+  <form method="POST" action="/checkandsaveimage" name="form-example-1" id="form-example-1" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Default file input example</label>
+      <input class="form-control" name="file" type="file" id="formFile">
+    </div>
+    
+    <button type="submit">Görüntüyü Yükle</button>
+
+</form>
+
+</div>
+{% endblock %}
