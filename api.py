@@ -10,12 +10,12 @@ from keras.applications.vgg16 import VGG16
 from keras.applications.vgg16 import preprocess_input
 import numpy as np
 # load an image from file
-class BlockChain:
+from blockchain import BlockChain,BlockData
+
+def append2Chain(owner,imgpath):
+    block=createAndReturnBlock(owner,)
     pass
 
-
-def append2Chain(imgpath):
-    pass
 
 def getimgFeatureVector(imgpath):
     model = VGG16(weights='imagenet', include_top=True)
