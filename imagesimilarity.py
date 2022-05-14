@@ -32,7 +32,8 @@ class ImageFeatureExtractor:
             pickle.dump(deserializedKeypoints, fp)    
 
         #deserialize descriptor
-        filepath = "ds/" + str(self.imgpath.split('/')[-1].split('.')[0].strip()) + ".txt"
+        filename = "{}.txt".format(str(self.imgpath.split('/')[-1].split('.')[0].strip()))
+        filepath=os.path.join("templates","featuredb",filename)
         with open(filepath, 'wb') as fp:
             pickle.dump(descriptor, fp)
         return (keypoint,descriptor)
@@ -58,8 +59,9 @@ class ImageComparator:
 
     @staticmethod
     def fetchDescriptorFromFile(i):
-        print("----ds:i", i.strip(),".txt")
-        filepath = "ds/{}.txt".format( i.strip())
+        filename = "{}.txt".format( i.strip())
+        filepath=os.path.join("templates","featuredb",filename)
+
         file = open(filepath,'rb')
         descriptor = pickle.load(file)
         file.close()

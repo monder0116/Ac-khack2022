@@ -7,6 +7,8 @@
     {%else %}
     <h3>{{imgvec.owner}}</h3>
     <h3>{{imgvec.imgname}}</h3>
+    <div style='background: url("{{ url_for("static", filename="images/link1.jpg") }}")' ></div> 
+
     <h3>{{imgvec.imgfeaturevector[:10]}}</h3>
 
     {%endif %}

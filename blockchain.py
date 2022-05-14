@@ -16,7 +16,7 @@ class BlockData:
 
 class BlockChain:
     initialblock = BlockData("bv", "acikhack.jpg", [])
-
+    similarity_th_ratio=0.5
     def __init__(self):
         self.chain = []
         self.newBlock(BlockChain.initialblock, "1")
@@ -35,9 +35,7 @@ class BlockChain:
         for data in self.chain:
             blockdata = data['blockdata']
             simratio=comparator.calculateResultsFor(newblockdata.imgname)
-            if  simratio> 0.5:
-                print("simratio=",simratio)
-                print("eklenemezzzzzzz", "-", newblockdata.imgfeaturevector)
+            if  simratio> BlockChain.similarity_th_ratio:
                 return False
         return True
 
