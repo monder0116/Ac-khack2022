@@ -1,14 +1,3 @@
-from eth_utils import is_0x_prefixed
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
-from keras.applications.vgg16 import preprocess_input
-from keras.applications.vgg16 import decode_predictions
-from keras.applications.vgg16 import VGG16
-from keras.models import Model
-from pickle import dump
-from keras.preprocessing import image
-from keras.applications.vgg16 import VGG16
-from keras.applications.vgg16 import preprocess_input
 import numpy as np
 from pip import main
 # load an image from file
