@@ -4,13 +4,13 @@
 <!-- imgvec has-> owner,imgname,imgfeaturevector  -->
     {% if error %}
         <h3> Eklemek istediğiniz tasarıma benzeyen başka tasarım bulunmaktadır.</h3>
+        <a type="button" href="/" class="btn btn-danger">Geri Dön</a>
     {%else %}
+    <img src="{{url_for('static', filename='images/'+imgvec.imgname+'.jpg')}}">
+
     <h3>{{imgvec.owner}}</h3>
     <h3>{{imgvec.imgname}}</h3>
-    <div style='background: url("{{ url_for("static", filename="images/link1.jpg") }}")' ></div> 
-
-    <h3>{{imgvec.imgfeaturevector[:10]}}</h3>
-
+   
     {%endif %}
 
    

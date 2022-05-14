@@ -2,15 +2,31 @@
 
 {% block body %}
 <div class="jumbotron">
-  <form method="POST" action="/checkandsaveimage" name="form-example-1" id="form-example-1" enctype="multipart/form-data">
+  <form method="POST" action="/checkandsaveimage" name="form-example-1" id="form-example-1"
+    enctype="multipart/form-data">
     <div class="mb-3">
-      <label for="formFile" class="form-label">Default file input example</label>
-      <input class="form-control" name="file" type="file" id="formFile">
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">@</span>
+        <input type="text" name="username" id="username" class="form-control" placeholder="Kullanıcı Adı" aria-label="Kullanıcı Adı" aria-describedby="basic-addon1">
+      </div>
+      <input onchange="loadFile(event)" class="form-control" name="file" type="file" id="formFile">
     </div>
-<img src="{{url_for('static',filename='images/link1.jpg')}}" alt=" ">
-    <button type="submit">Görüntüyü Yükle</button>
+    <div class="col-md-12">
+      <center>
 
-</form>
+        <img class="img-responsive center-block centered" id="output" width="600px" /></p>
+      </center>
+
+    </div>
+    <button class="btn btn-primary my-2 " type="submit">Sisteme Yükle</button>
+  </form>
 
 </div>
+<script>
+  var loadFile = function (event) {
+    var image = document.getElementById('output');
+    image.src = URL.createObjectURL(event.target.files[0]);
+  };
+</script>
+
 {% endblock %}

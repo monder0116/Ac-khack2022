@@ -38,7 +38,6 @@ class BlockChain:
             if  simratio> BlockChain.similarity_th_ratio:
                 return False
         return True
-
     @staticmethod
     def hash(block):
         block_string = json.dumps(
