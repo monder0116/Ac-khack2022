@@ -9,12 +9,12 @@ mainchain=BlockChain()
 
 def append2Chain(owner,imgpath):
     block=createAndReturnBlock(owner,imgpath)
-    result=mainchain.newBlock(block)
-    if not result:
-        return None
+    result,similarblock=mainchain.newBlock(block)
+    if result==None:
+        return None,similarblock
     for i in mainchain.chain:
         print("block:",i)
-    return block
+    return result,None
 def createAndReturnBlock(owner,imgpath):
     extrator=ImageFeatureExtractor(imgpath)
     vector= extrator.extract()

@@ -1,32 +1,39 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<!-- imgvec has-> owner,imgname,imgfeaturevector  -->
+<!-- blockdata -> owner,imgname,imgfeaturevector   ,     -->
 <div class="album py-5 bg-light">
-    <div class="container">
-        
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for block in blocksdata %}
-        <div class="col">
-          <div class="card shadow-sm">
-            <img class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img" src="{{url_for('static', filename='images/'+block.imgname+'.jpg')}}" preserveAspectRatio="xMidYMid slice">
+  <div class="container">
 
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {%if blocks|length==0 %}
+      <h3>Gösterilecek Kayıt Bulunmamaktadır.</h3>
+      {%endif%}
+      {% for block in blocks %}
+      <div class="col">
+        <div class="card shadow-sm">
+          <img class="bd-placeholder-img card-img-top" width="100%" height="225" role="img"
+            src="{{url_for('static', filename='images/'+block['blockdata'].imgname+'.jpg')}}" preserveAspectRatio="xMidYMid slice">
+
+          <div class="card-body">
+            <p class="card-text"><p>Kullanıcı Adı: {{ block['blockdata'].owner |upper |safe}} </p> <p>Pre-Block Hash:  {{block['preheader_hash']}}</p><p>Block Hash: {{hash(block)}} </p>  </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a download="custom-filename.jpg" type="button" class="btn btn-sm btn-outline-secondary">İndir</a>
+                <a download="{{url_for('static', filename='images/'+block['blockdata'].imgname+'.jpg')}}"
+                  href="{{url_for('static', filename='images/'+block['blockdata'].imgname+'.jpg')}}">
+
+                </a>
+
               </div>
             </div>
           </div>
         </div>
-        {%endfor %}
       </div>
+      {%endfor %}
     </div>
   </div>
+</div>
 
-   
+
 {% endblock %}

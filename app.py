@@ -24,8 +24,8 @@ def index():
     return render_template('index.html',app_data=app_data)
 @app.route('/listblocks')
 def listblocks():
-    blocksdata= [ block['blockdata'] for block in api.mainchain.chain if block!=BlockChain.initialblock]
-    return render_template('listblocks.html',app_data=app_data,blocksdata=blocksdata)
+    blocks= [ block for block in api.mainchain.chain if block!=BlockChain.initialblock]
+    return render_template('listblocks.html',app_data=app_data,blocks=blocks,hash=BlockChain.hash)
 
 @app.route('/checkandsaveimage',methods=["POST"])
 def checkandsaveimage():
@@ -35,9 +35,8 @@ def checkandsaveimage():
         username=request.form.get('username')
         path=os.path.join("templates","static","images",image.filename)
         image.save(path)
-        result=api.append2Chain(username,path)
-    return render_template('imgvector.html',imgvec=result,imgnamewithextention=image.filename.split("/")[-1],app_data=app_data,error=result==None)
-
+        addedblock,similarblock=api.append2Chain(username,path)
+    return render_template('imgvector.html',similarblock=similarblock,block=addedblock,imgnamewithextention=image.filename.split("/")[-1],app_data=app_data,hash=BlockChain.hash)
 @app.route('/hakkimizda')
 def hakkimizda():
     return render_template('contact.html',app_data=app_data)

@@ -15,29 +15,32 @@ class BlockData:
 
 
 class BlockChain:
-    initialblock = BlockData("bv", "acikhack.jpg", [])
+    initialblock =None
     similarity_th_ratio=0.5
     def __init__(self):
         self.chain = []
-        self.newBlock(BlockChain.initialblock, "1")
-
+        self.newBlock(BlockData("","",[1]), "1")
     def newBlock(self, newblockdata, preheader_hash=None):
-        if not self.checkisdesignvalid(newblockdata):
-            return False
+        checkres,similarblock=self.checkChainIsvalid(newblockdata)
+        if not checkres:
+            return None,similarblock
         prehash = preheader_hash or self.hash(self.chain[-1])
         newblockheader = {'preheader_hash': prehash, 'blockdata': newblockdata}
+        if len(self.chain)==0:
+            BlockChain.initialblock=newblockheader
         self.chain.append(newblockheader)
-        return True
-    def checkisdesignvalid(self, newblockdata):
-        liste = [item['blockdata'].imgname for item in self.chain if item['blockdata'].imgname !=
-                 BlockChain.initialblock.imgname]
+        return newblockheader,None
+    def checkChainIsvalid(self, newblockdata):
+        '''
+        return "chain valid status as bool variable":bool and "if has similar, similar block instance":BlockDict 
+        '''
+        liste = [item['blockdata'].imgname for item in self.chain if item != BlockChain.initialblock]
         comparator = ImageComparator(liste)
         for data in self.chain:
-            blockdata = data['blockdata']
             simratio=comparator.calculateResultsFor(newblockdata.imgname)
             if  simratio> BlockChain.similarity_th_ratio:
-                return False
-        return True
+                return False,data
+        return True,None
     @staticmethod
     def hash(block):
         block_string = json.dumps(

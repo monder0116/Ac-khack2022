@@ -2,14 +2,21 @@
 
 {% block body %}
 <!-- imgvec has-> owner,imgname,imgfeaturevector  -->
-    {% if error %}
+    {% if block==None %}
         <h3> Eklemek istediğiniz tasarıma benzeyen başka tasarım bulunmaktadır.</h3>
+        <img src="{{url_for('static', filename='images/'+similarblock['blockdata'].imgname+'.jpg')}}">
+        <h3>Hash: {{hash(similarblock)}}</h3>
+        <h3>{{similarblock['blockdata'].owner}}</h3>
+        <h3>{{similarblock['blockdata'].imgname}}</h3>
+       
         <a type="button" href="/" class="btn btn-danger">Geri Dön</a>
     {%else %}
-    <img src="{{url_for('static', filename='images/'+imgvec.imgname+'.jpg')}}">
+    {%set blockdata=block['blockdata']%}
 
-    <h3>{{imgvec.owner}}</h3>
-    <h3>{{imgvec.imgname}}</h3>
+    <img src="{{url_for('static', filename='images/'+blockdata.imgname+'.jpg')}}">
+    <h3>Hash: {{hash(block)}}</h3>
+    <h3>{{blockdata.owner}}</h3>
+    <h3>{{blockdata.imgname}}</h3>
    
     {%endif %}
 
