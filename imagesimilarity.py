@@ -24,7 +24,8 @@ class ImageFeatureExtractor:
         keypoint,descriptor= ImageFeatureExtractor.detector.detectAndCompute(self.image, None)
         #deserialize Keypoints
         deserializedKeypoints = []
-        filepath = "kp/" + str(self.imgpath.split('/')[-1].split('.')[0].strip()) + ".txt"
+        filename =  "{}.txt".format(self.imgpath.split('/')[-1].split('.')[0].strip()) 
+        filepath=os.path.join("templates","featuredb","kp",filename)
         for point in keypoint:
             temp = (point.pt, point.size, point.angle, point.response, point.octave, point.class_id)
             deserializedKeypoints.append(temp)
@@ -33,7 +34,7 @@ class ImageFeatureExtractor:
 
         #deserialize descriptor
         filename = "{}.txt".format(str(self.imgpath.split('/')[-1].split('.')[0].strip()))
-        filepath=os.path.join("templates","featuredb",filename)
+        filepath=os.path.join("templates","featuredb","ds",filename)
         with open(filepath, 'wb') as fp:
             pickle.dump(descriptor, fp)
         return (keypoint,descriptor)
@@ -44,8 +45,8 @@ class ImageComparator:
         self.allblockimgnamelist=allblockimgnamelist
     @staticmethod
     def fetchKeypointFromFile(i):
-        filepath = "kp/{}.txt".format( i.strip())
-        print(filepath)
+        filename = "{}.txt".format( i.strip())
+        filepath=os.path.join("templates","featuredb","kp",filename)
         print("kp file exist=",os.path.exists(filepath))
         keypoint = []
 
@@ -60,8 +61,7 @@ class ImageComparator:
     @staticmethod
     def fetchDescriptorFromFile(i):
         filename = "{}.txt".format( i.strip())
-        filepath=os.path.join("templates","featuredb",filename)
-
+        filepath=os.path.join("templates","featuredb","ds",filename)
         file = open(filepath,'rb')
         descriptor = pickle.load(file)
         file.close()
@@ -99,15 +99,16 @@ class ImageComparator:
 
     def calculateResultsFor(self,newimagename):
         if len(self.allblockimgnamelist)==0:
-            return 0
+            return 0,None
         keypoint1 = ImageComparator.fetchKeypointFromFile(newimagename)
         descriptor1 = ImageComparator.fetchDescriptorFromFile(newimagename)
         maxscore=0
+        name=None
         for j in self.allblockimgnamelist:
             keypoint2 = ImageComparator.fetchKeypointFromFile(j)
             descriptor2 =ImageComparator.fetchDescriptorFromFile(j)
             matches = ImageComparator.calculateMatches(descriptor1, descriptor2)
             score = ImageComparator.calculateScore(len(matches),len(keypoint1),len(keypoint2))  
             if score>maxscore:
-                maxscore=score
-        return maxscore
+                maxscore,name=score,j
+        return maxscore,name

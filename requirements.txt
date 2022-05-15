@@ -1,7 +1,7 @@
 ###### Requirements without Version Specifiers ######
 flask
-opencv-contrib-python==4.5.4.58
 opencv-python==4.5.2.54
+opencv-contrib-python==4.5.4.58
 requests==2.25.1
 matplotlib==3.4.3
 hashlib

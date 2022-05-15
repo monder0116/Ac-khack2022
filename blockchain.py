@@ -13,7 +13,6 @@ class BlockData:
             (self.owner, self.imgname, self.imgfeaturevector), sort_keys=True).encode()
         return block_string
 
-
 class BlockChain:
     initialblock =None
     similarity_th_ratio=0.5
@@ -32,14 +31,13 @@ class BlockChain:
         return newblockheader,None
     def checkChainIsvalid(self, newblockdata):
         '''
-        return "chain valid status as bool variable":bool and "if has similar, similar block instance":BlockDict 
+        return "chain valid status":bool and "if has similar, similar block instance":BlockDict 
         '''
         liste = [item['blockdata'].imgname for item in self.chain if item != BlockChain.initialblock]
         comparator = ImageComparator(liste)
-        for data in self.chain:
-            simratio=comparator.calculateResultsFor(newblockdata.imgname)
-            if  simratio> BlockChain.similarity_th_ratio:
-                return False,data
+        simratio,similarimgname=comparator.calculateResultsFor(newblockdata.imgname)
+        if  simratio> BlockChain.similarity_th_ratio:
+            return False,similarimgname
         return True,None
     @staticmethod
     def hash(block):

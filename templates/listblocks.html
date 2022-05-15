@@ -19,11 +19,10 @@
             <p class="card-text"><p>Kullanıcı Adı: {{ block['blockdata'].owner |upper |safe}} </p> <p>Pre-Block Hash:  {{block['preheader_hash']}}</p><p>Block Hash: {{hash(block)}} </p>  </p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <a download="custom-filename.jpg" type="button" class="btn btn-sm btn-outline-secondary">İndir</a>
-                <a download="{{url_for('static', filename='images/'+block['blockdata'].imgname+'.jpg')}}"
-                  href="{{url_for('static', filename='images/'+block['blockdata'].imgname+'.jpg')}}">
+                <a   download="{{url_for('static', filename='images/'+block['blockdata'].imgname+'.jpg')}}"
+                href="{{url_for('static', filename='images/'+block['blockdata'].imgname+'.jpg')}}" type="button" class="btn btn-sm btn-outline-secondary">İndir</a>
 
-                </a>
+              
 
               </div>
             </div>

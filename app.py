@@ -35,8 +35,8 @@ def checkandsaveimage():
         username=request.form.get('username')
         path=os.path.join("templates","static","images",image.filename)
         image.save(path)
-        addedblock,similarblock=api.append2Chain(username,path)
-    return render_template('imgvector.html',similarblock=similarblock,block=addedblock,imgnamewithextention=image.filename.split("/")[-1],app_data=app_data,hash=BlockChain.hash)
+        addedblock,similarimgname=api.append2Chain(username,path)
+    return render_template('imgvector.html',similarimgname=similarimgname,block=addedblock,imgnamewithextention=image.filename.split("/")[-1],app_data=app_data,hash=BlockChain.hash)
 @app.route('/hakkimizda')
 def hakkimizda():
     return render_template('contact.html',app_data=app_data)

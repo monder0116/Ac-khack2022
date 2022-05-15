@@ -1,6 +1,7 @@
 ### Kullanılan  Open-source Kaynaklar
 - Flask Framework -> https://flask.palletsprojects.com/en/1.1.x/
 - Basic Template for flask -> https://github.com/petersimeth/basic-flask-template
+
 ### Tasarım
 
 
