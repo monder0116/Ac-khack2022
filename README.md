@@ -4,6 +4,7 @@
 
 ### Tasarım
 
+Tekstilde oluşturulan benzersiz tasarımları içersinde barındıran blockchain web uygulaması oluşturulmuştur. Yeni eklenecek tasarım, chain içerisinde herhangi bir block'a ait tasarıma %50den fazla benzerliği buluyorsa yeni oluşturulan block smart contract gereği kabul edilmemektedir. Görüntülerin benzerliği için SIFT algoritması kullanılmıştır.
 
 ### Kurulum 
 
